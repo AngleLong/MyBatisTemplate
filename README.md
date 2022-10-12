@@ -43,7 +43,7 @@
             <version>5.1.49</version>
         </dependency>
 
-      	<!--jdbc-->
+        <!--jdbc-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
@@ -128,18 +128,18 @@ public class MybatisConfig {
     @Bean
     public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) {
 
-      	// SqlSessionFactoryBean这个类是mybatis-spring为我们提供简化赋值的一些操作,
-      	// 它把需要的操作都封装到了DruidDataSource(DataSource)的子类,因为有自动装填,
-      	// 所以这里直接传进来就行了.
-      
+        // SqlSessionFactoryBean这个类是mybatis-spring为我们提供简化赋值的一些操作,
+        // 它把需要的操作都封装到了DruidDataSource(DataSource)的子类,因为有自动装填,
+        // 所以这里直接传进来就行了.
+
         //创建sql的链接对象,其实这个就是对应之前MyBatis中的配置文件的
 
         SqlSessionFactoryBean ssfb = new SqlSessionFactoryBean();
 
-      	// 别名
+        // 别名
         ssfb.setTypeAliasesPackage("com.angle");
 
-      	// 设置dataSource 这里面的dataSource是JdbcConfig中提供的.
+        // 设置dataSource 这里面的dataSource是JdbcConfig中提供的.
         ssfb.setDataSource(dataSource);
 
         return ssfb;
@@ -148,9 +148,9 @@ public class MybatisConfig {
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
 
-      	// 这里对应的Mybatis中写的mapper因为扫描的是dao下面的所有的Mapper,
-      	// 所以这里就直接写的文件路径了
-      	
+        // 这里对应的Mybatis中写的mapper因为扫描的是dao下面的所有的Mapper,
+        // 所以这里就直接写的文件路径了
+
         MapperScannerConfigurer msc = new MapperScannerConfigurer();
         //扫描dao下的内容
         msc.setBasePackage("com.angle.dao");
@@ -180,8 +180,8 @@ public class JdbcConfig {
 
     @Bean
     public DataSource dataSource() {
-      	// 提供dataSource的方法
-      
+        // 提供dataSource的方法
+
         DruidDataSource ds = new DruidDataSource();
         ds.setDriverClassName(driver);
         ds.setUrl(url);
@@ -326,7 +326,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findById(int id) {
-      return   accountDao.findById(id);
+        return   accountDao.findById(id);
     }
 
     @Override
@@ -363,3 +363,36 @@ public class App {
     }
 }
 ```
+
+
+
+### 2.5 关于JUnit的使用
+
+> 这里其实就是上面的两个注解.
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SpringConfig.class)
+public class AccountServiceTest {
+
+    @Autowired
+    private AccountService accountService;
+
+    @Test
+    public void testFindById() {
+
+        Account account = accountService.findById(1);
+
+        System.out.println(account);
+    }
+
+}
+```
+
+
+
+## 3. 可能出现的问题
+
+1. 关于数据库的连接.
+
+> 在idea中连接数据库还是挺方便的.直接点右边的database关联上相应的sql就行了(你得有sql). 
